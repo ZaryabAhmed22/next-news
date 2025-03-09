@@ -21,9 +21,19 @@ export default function FilteredNewsPage({ params }) {
     links = getAvailableNewsMonths(selectedYear);
   }
 
+  // filtering news for month and year combination for routes aacrchive/2024/3 (archive/year/month)
   if (selectedYear && selectedMonth) {
     news = getNewsForYearAndMonth(selectedYear, selectedMonth);
     links = [];
+  }
+
+  // Adding fallback error for unavailable years and months
+  if (
+    (selectedYear && !getAvailableNewsYears().includes(+selectedYear)) ||
+    (selectedMonth &&
+      !getAvailableNewsMonths(+selectedYear).includes(+selectedMonth))
+  ) {
+    throw new Error("Invalid filter");
   }
 
   let newsContent = <p> No news found for the selected period.</p>;
